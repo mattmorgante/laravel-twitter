@@ -49,7 +49,6 @@ class TwitterController extends Controller
     private function getUserIds($tweetURL) {
         $tweetArray = explode('/status/', $tweetURL);
         $tweetId = (int)$tweetArray[1];
-
         $retweeters = \Twitter::getRters(['id' => $tweetId]);
         // ToDo: If more than 100 retweets, get the next set of retweeter ids
         return $retweeters->ids;

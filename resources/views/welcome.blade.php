@@ -11,23 +11,13 @@
     </script>
     <style>
         html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
             font-size: 24px;
             height: 100vh;
-            margin: 0;
+            margin: 20px;
         }
 
         .full-height {
             height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
         }
 
         .position-ref {
