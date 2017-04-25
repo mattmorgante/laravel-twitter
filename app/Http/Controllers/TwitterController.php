@@ -19,7 +19,7 @@ class TwitterController extends Controller
 
     private function checkDuplication($tweetURL) {
         $twoHoursAgo = Carbon::now()->subHour(2);
-        $existingReach = Reach::where('url', '=', $tweetURL)->first();
+        $existingReach = Reach::where('url', '=', $tweetURL)->order_by('created_at', 'desc')->first();
         if (!is_null($existingReach) && ($existingReach->created_at->gt($twoHoursAgo))) {
             echo "the reach of this tweet is ".$existingReach->tweet_impact ." users -- retrieved from DB";
             die;
@@ -33,8 +33,10 @@ class TwitterController extends Controller
         $userIds = $this->getUserIds($tweetURL);
         $reach = 0;
         foreach ($userIds as $user) {
+            dd($user);
             // get number of followers of this user
             $followers = \Twitter::getFollowersIds(['id' => $user]);
+            dd($followers);
             // ToDo: use next cursor to get the next 5000 results, if necessary
             $userReach = count($followers->ids);
             $reach = $userReach + $reach;
@@ -52,7 +54,7 @@ class TwitterController extends Controller
         $tweetId = (int)$tweetArray[1];
 
         $retweeters = \Twitter::getRters(['id' => $tweetId]);
-        // ToDo: Use next cursor to get the next set of retweeters
+        // ToDo: If more than 100 retweets, get the next set of retweeter ids
         return $retweeters->ids;
     }
 }
