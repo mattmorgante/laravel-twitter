@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Reach;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
 class TwitterController extends Controller
@@ -19,7 +18,7 @@ class TwitterController extends Controller
 
     private function checkDuplication($tweetURL) {
         $twoHoursAgo = Carbon::now()->subHour(2);
-        $existingReach = Reach::where('url', '=', $tweetURL)->order_by('created_at', 'desc')->first();
+        $existingReach = Reach::where('url', '=', $tweetURL)->orderBy('created_at', 'desc')->first();
         if (!is_null($existingReach) && ($existingReach->created_at->gt($twoHoursAgo))) {
             echo "the reach of this tweet is ".$existingReach->tweet_impact ." users -- retrieved from DB";
             die;
@@ -33,10 +32,8 @@ class TwitterController extends Controller
         $userIds = $this->getUserIds($tweetURL);
         $reach = 0;
         foreach ($userIds as $user) {
-            dd($user);
             // get number of followers of this user
             $followers = \Twitter::getFollowersIds(['id' => $user]);
-            dd($followers);
             // ToDo: use next cursor to get the next 5000 results, if necessary
             $userReach = count($followers->ids);
             $reach = $userReach + $reach;
